@@ -26,8 +26,7 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("redirect to meals");
-        List<MealWithExceed> mealWithExceedList = MealsUtil.getWithExceeded(mealService.getList(), 2000);
-        UserMealWithExceedUtil.sortListByDateTime(mealWithExceedList);
+        List<MealWithExceed> mealWithExceedList = mealService.getMealWithExceeds(2000);
         request.setAttribute("mealList", mealWithExceedList);
         request.getRequestDispatcher("/meals.jsp").forward(request, response);
         //response.sendRedirect("meals.jsp");
