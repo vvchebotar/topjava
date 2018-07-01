@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class MealDaoInMemoryImpl implements MealDao {
-    private List<Meal> mealList = MealsListInitUtil.prepareMealList();
+    final public List<Meal> mealList = MealsListInitUtil.prepareMealList();
 
     @Override
     public List<Meal> getList() {
@@ -17,7 +17,7 @@ public class MealDaoInMemoryImpl implements MealDao {
 
     @Override
     public void deleteById(String id) {
-        //TODO implement
+        throw new NotImplementedException();
     }
 
     @Override
@@ -32,26 +32,32 @@ public class MealDaoInMemoryImpl implements MealDao {
 
     @Override
     public Long create(Meal newInstance) {
-        //TODO implement
-        mealList.add(newInstance);
-        return null; //newInstance.getId;
-
+        throw new NotImplementedException();
     }
 
     @Override
     public Meal retrieve(Class<Meal> clazz, Long id) {
-        //TODO implement
+        for (Meal meal : mealList) {
+            if (meal.getId() == id) {
+                return meal;
+            }
+        }
         return null;
     }
 
     @Override
-    public void update(Meal transientObject) {
-        //TODO implement
-
+    public synchronized void update(Meal meal) {
+        Meal retrievedMeal = retrieve(Meal.class, meal.getId());
+        if (meal.getVersion() == retrievedMeal.getVersion()) {
+            meal.setVersion(meal.getVersion() + 1);
+            mealList.remove(retrievedMeal);
+            mealList.add(meal);
+        }
     }
 
     @Override
-    public void delete(Meal persistentObject) {
-        //TODO implement
+    public synchronized void delete(Meal meal) {
+        Meal retrievedMeal = retrieve(Meal.class, meal.getId());
+        mealList.remove(retrievedMeal);
     }
 }

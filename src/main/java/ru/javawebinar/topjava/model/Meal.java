@@ -13,11 +13,14 @@ public class Meal {
 
     private final int calories;
 
+    private int version;
+
     public Meal(long id, LocalDateTime dateTime, String description, int calories) {
         this.id = id;
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
+        version = 0;
     }
 
     public Meal(LocalDateTime dateTime, String description, int calories) {
@@ -25,6 +28,7 @@ public class Meal {
         this.description = description;
         this.calories = calories;
         id = 0L;
+        version = 0;
     }
 
     public LocalDateTime getDateTime() {
@@ -49,5 +53,13 @@ public class Meal {
 
     public long getId() {
         return id;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }
