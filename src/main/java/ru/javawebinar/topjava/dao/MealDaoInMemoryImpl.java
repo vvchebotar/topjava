@@ -11,26 +11,6 @@ public class MealDaoInMemoryImpl implements MealDao {
     final public List<Meal> mealList = MealsListInitUtil.prepareMealList();
 
     @Override
-    public List<Meal> getList() {
-        return mealList;
-    }
-
-    @Override
-    public void deleteById(String id) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public List<Meal> getByDateTime(LocalDateTime date) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public int getAllBooksCount() {
-        return mealList.size();
-    }
-
-    @Override
     public Long create(Meal newInstance) {
         throw new NotImplementedException();
     }
@@ -59,5 +39,25 @@ public class MealDaoInMemoryImpl implements MealDao {
     public synchronized void delete(Meal meal) {
         Meal retrievedMeal = retrieve(Meal.class, meal.getId());
         mealList.remove(retrievedMeal);
+    }
+
+    @Override
+    public List<Meal> getList() {
+        return mealList;
+    }
+
+    @Override
+    public void deleteById(String id) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public List<Meal> getByDateTime(LocalDateTime date) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public int getAllMealsCount() {
+        return mealList.size();
     }
 }

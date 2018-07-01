@@ -13,5 +13,5 @@ public interface MealDao extends GenericDao<Meal, Long> {
 
     List<Meal> getByDateTime(LocalDateTime date);
 
-    int getAllBooksCount();
+    int getAllMealsCount();
 }
