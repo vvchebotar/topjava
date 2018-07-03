@@ -3,9 +3,12 @@ package ru.javawebinar.topjava.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Meal {
-    private long id;
+    private static AtomicInteger mealsObjectsCounter = new AtomicInteger(1);
+
+    private Long id;
 
     private final LocalDateTime dateTime;
 
@@ -15,20 +18,20 @@ public class Meal {
 
     private int version;
 
-    public Meal(long id, LocalDateTime dateTime, String description, int calories) {
-        this.id = id;
-        this.dateTime = dateTime;
-        this.description = description;
-        this.calories = calories;
-        version = 0;
-    }
-
     public Meal(LocalDateTime dateTime, String description, int calories) {
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
-        id = 0L;
-        version = 0;
+        id = mealsObjectsCounter.longValue();
+        mealsObjectsCounter.incrementAndGet();
+    }
+
+    public Meal(long id, LocalDateTime dateTime, String description, int calories, int version) {
+        this.dateTime = dateTime;
+        this.description = description;
+        this.calories = calories;
+        this.id = id;
+        this.version = version;
     }
 
     public LocalDateTime getDateTime() {
@@ -51,7 +54,7 @@ public class Meal {
         return dateTime.toLocalTime();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -61,5 +64,15 @@ public class Meal {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+
+    @Override
+    public String toString() {
+        return "Meal{" +
+                "id=" + id +
+                ", dateTime=" + dateTime +
+                ", calories=" + calories +
+                ", version=" + version +
+                '}';
     }
 }
