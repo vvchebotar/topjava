@@ -7,8 +7,7 @@
     <title>Meals table</title>
 </head>
 <body>
-<h3>База данных книг</h3>
-
+<h3>Meals table</h3>
 <table border="1">
     <tr style="color: black">
         <th><b>Дата/Время</b></th>
@@ -23,7 +22,7 @@
             <td>${newParsedDate}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
-            <td style="color: black"><a href="addBookToFavorites?id=${meal.id}">Редактировать</a></td>
+            <td style="color: black"><a href="mealEdit?id=${meal.id}">Edit</a></td>
         </tr>
     </c:forEach>
 </table>
