@@ -13,4 +13,6 @@ public interface MealService extends GenericService<Meal, Long> {
     int getAllMealsCount();
 
     List<MealWithExceed> getMealWithExceeds(int caloriesPerDay);
+
+    void deleteById(long id);
 }

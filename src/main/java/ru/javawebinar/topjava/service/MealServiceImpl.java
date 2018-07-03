@@ -1,7 +1,7 @@
 package ru.javawebinar.topjava.service;
 
 import ru.javawebinar.topjava.dao.MealDao;
-import ru.javawebinar.topjava.dao.MealDaoInMemoryImpl;
+import ru.javawebinar.topjava.dao.MealDaoHardCodeImpl;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealWithExceed;
 import ru.javawebinar.topjava.util.MealsUtil;
@@ -10,7 +10,7 @@ import ru.javawebinar.topjava.util.UserMealWithExceedUtil;
 import java.util.List;
 
 public class MealServiceImpl implements MealService {
-    private MealDao mealDao = new MealDaoInMemoryImpl();
+    private MealDao mealDao = MealDaoHardCodeImpl.getInstance();
 
     @Override
     public Long create(Meal newInstance) {
@@ -49,5 +49,8 @@ public class MealServiceImpl implements MealService {
         return mealWithExceedList;
     }
 
-
+    @Override
+    public void deleteById(long id) {
+        mealDao.deleteById(id);
+    }
 }
