@@ -2,10 +2,8 @@ package ru.javawebinar.topjava.util;
 
 import ru.javawebinar.topjava.model.MealWithExceed;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class UserMealWithExceedUtil {
 
