@@ -9,9 +9,9 @@ public interface MealDao extends GenericDao<Meal, Long> {
 
     List<Meal> getList();
 
-    void deleteById(String id);
-
     List<Meal> getByDateTime(LocalDateTime date);
 
     int getAllMealsCount();
+
+    void deleteById(Long id);
 }
