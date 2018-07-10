@@ -12,7 +12,6 @@ import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -36,7 +35,7 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public boolean delete(int id, User user) {
-        boolean b = mealRepository.delete(id, user.getMealsIdSet()) ? user.deleteMealId(id) : false;
+        boolean b = mealRepository.delete(id, user.getMealsIdSet()) && user.deleteMealId(id);
         userRepository.save(user);
         return b;
     }
@@ -47,7 +46,7 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
-    public Collection<Meal> getAll(User user) {
+    public List<Meal> getAll(User user) {
         return mealRepository.getAll(user.getMealsIdSet());
     }
 
@@ -59,11 +58,6 @@ public class MealServiceImpl implements MealService {
         LocalTime endLocalTime = endTime == null || endTime.isEmpty() ? LocalTime.MAX : LocalTime.parse(endTime);
         List<Meal> meals = mealRepository.getAll(user.getMealsIdSet());
         return MealsUtil.getFilteredWithExceeded(meals, MealsUtil.DEFAULT_CALORIES_PER_DAY, meal ->
-                isaBoolean(startLocalDate, endLocalDate, startLocalTime, endLocalTime, meal));
-    }
-
-    private boolean isaBoolean(LocalDate startLocalDate, LocalDate endLocalDate, LocalTime startLocalTime, LocalTime endLocalTime, Meal meal) {
-        return DateTimeUtil.isBetween(meal.getDate(), startLocalDate, endLocalDate) &&
-                DateTimeUtil.isBetween(meal.getTime(), startLocalTime, endLocalTime);
+                DateTimeUtil.filterByDateTime(startLocalDate, endLocalDate, startLocalTime, endLocalTime, meal));
     }
 }

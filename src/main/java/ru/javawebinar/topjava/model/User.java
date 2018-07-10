@@ -1,9 +1,6 @@
 package ru.javawebinar.topjava.model;
 
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
 
@@ -94,13 +91,6 @@ public class User extends AbstractNamedEntity {
 
     public boolean deleteMealId(Integer id) {
         return id != null && mealsIdSet.remove(id);
-    }
-
-    public int compareByNameEmail(User b) {
-        if (getName().compareTo(b.getName()) == 0) {
-            return getEmail().compareTo(b.getEmail());
-        }
-        return getName().compareTo(b.getName());
     }
 
     @Override

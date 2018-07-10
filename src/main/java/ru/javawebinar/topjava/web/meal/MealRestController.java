@@ -32,7 +32,7 @@ public class MealRestController {
         this.mealService = mealService;
     }
 
-    //      @RequestMapping(value = "/meal/{id}", method = RequestMethod.POST)
+    //@RequestMapping(value = "/meal/{id}", method = RequestMethod.POST)
     public String processEditForm(HttpServletRequest request) throws IOException {
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");

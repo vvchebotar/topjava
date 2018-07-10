@@ -6,6 +6,7 @@ import ru.javawebinar.topjava.repository.UserRepository;
 import ru.javawebinar.topjava.util.UsersUtil;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,13 +43,12 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
         return repository.get(id);
     }
 
+    /**
+     * return null is bed practice, investigate it.
+     */
     @Override
     public User getByEmail(String email) {
-        List<User> users = repository.values().stream().filter(a -> a.getEmail().equals(email)).collect(Collectors.toList());
-        if (users.size() == 1) {
-            return users.get(0);
-        }
-        return null;
+        return repository.values().stream().filter(a -> a.getEmail().equals(email)).findFirst().orElse(null);
     }
 
     @Override
@@ -56,6 +56,6 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
         if (repository.isEmpty()) {
             return Collections.emptyList();
         }
-        return repository.values().stream().sorted(User::compareByNameEmail).collect(Collectors.toList());
+        return repository.values().stream().sorted(Comparator.comparing(User::getName).thenComparing(User::getEmail)).collect(Collectors.toList());
     }
 }

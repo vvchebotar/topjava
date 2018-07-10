@@ -1,6 +1,10 @@
 package ru.javawebinar.topjava.util;
 
+import ru.javawebinar.topjava.model.Meal;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class DateTimeUtil {
@@ -12,5 +16,10 @@ public class DateTimeUtil {
 
     public static String toString(LocalDateTime ldt) {
         return ldt == null ? "" : ldt.format(DATE_TIME_FORMATTER);
+    }
+
+    public static boolean filterByDateTime(LocalDate startLocalDate, LocalDate endLocalDate, LocalTime startLocalTime, LocalTime endLocalTime, Meal meal) {
+        return isBetween(meal.getDate(), startLocalDate, endLocalDate) &&
+                isBetween(meal.getTime(), startLocalTime, endLocalTime);
     }
 }

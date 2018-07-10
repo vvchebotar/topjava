@@ -5,8 +5,14 @@
 </head>
 <body>
 <h3>Проект <a href="https://github.com/JavaWebinar/topjava" target="_blank">Java Enterprise (Topjava)</a></h3>
-<h4><a href="login?select=2" target="_blank">Зайти как User</a></h4>
-<h4><a href="login?select=1" target="_blank">Зайти как Admin</a></h4>
+<select name="userid" form="userform">
+    <option value="1">Admin</option>
+    <option value="2">User</option>
+</select>
+<br>
+<form action="users" method="post" id="userform">
+    <input type="submit" value="Login">
+</form>
 <hr>
 <ul>
     <li><a href="users">Users</a></li>

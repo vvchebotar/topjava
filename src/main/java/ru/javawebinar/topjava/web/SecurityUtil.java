@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
-import ru.javawebinar.topjava.util.exception.NotLogginedUser;
 
 import static org.slf4j.LoggerFactory.getLogger;
 import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
@@ -23,9 +22,6 @@ public class SecurityUtil {
     }
 
     public static User authUser() {
-        if (user == null) {
-            throw new NotLogginedUser("no loggined user");
-        }
         return user;
     }
 
@@ -34,16 +30,7 @@ public class SecurityUtil {
     }
 
     public static void setAuthUserId(int userId) {
-        switch (userId) {
-            case 1:
-                getWithSavingPrevious(1);
-                break;
-            case 2:
-                getWithSavingPrevious(2);
-                break;
-            default:
-                user = null;
-        }
+        getWithSavingPrevious(userId);
     }
 
     private static void getWithSavingPrevious(int i) {
