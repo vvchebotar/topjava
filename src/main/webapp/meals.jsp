@@ -15,6 +15,22 @@
             color: red;
         }
     </style>
+    <form method="get" action="meals">
+        <input type="hidden" name="action" value="filter">
+        <dl>
+            <dt>Date From:</dt>
+            <dd><input type="date" name="startDate"></dd>
+            <dt>To:</dt>
+            <dd><input type="date" name="endDate"></dd>
+        </dl>
+        <dl>
+            <dt>Time From:</dt>
+            <dd><input type="time" name="startTime"></dd>
+            <dt>To:</dt>
+            <dd><input type="time" name="endTime"></dd>
+        </dl>
+        <button type="submit">Filter</button>
+    </form>
 </head>
 <body>
 <section>
@@ -33,7 +49,7 @@
         </tr>
         </thead>
         <c:forEach items="${meals}" var="meal">
-            <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.model.MealWithExceed"/>
+            <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.MealWithExceed"/>
             <tr class="${meal.exceed ? 'exceeded' : 'normal'}">
                 <td>
                         <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>

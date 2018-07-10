@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.model;
 
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Set;
 
 import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
@@ -19,6 +20,12 @@ public class User extends AbstractNamedEntity {
     private Set<Role> roles;
 
     private int caloriesPerDay = DEFAULT_CALORIES_PER_DAY;
+
+    private Set<Integer> mealsIdSet = new HashSet<>();
+
+    public User(String name, String email, String password, Role role, Role... roles) {
+        this(null, name, email, password, DEFAULT_CALORIES_PER_DAY, true, EnumSet.of(role, roles));
+    }
 
     public User(Integer id, String name, String email, String password, Role role, Role... roles) {
         this(id, name, email, password, DEFAULT_CALORIES_PER_DAY, true, EnumSet.of(role, roles));
@@ -77,6 +84,25 @@ public class User extends AbstractNamedEntity {
         return password;
     }
 
+    public Set<Integer> getMealsIdSet() {
+        return mealsIdSet;
+    }
+
+    public boolean addMealId(Integer id) {
+        return id != null && mealsIdSet.add(id);
+    }
+
+    public boolean deleteMealId(Integer id) {
+        return id != null && mealsIdSet.remove(id);
+    }
+
+    public int compareByNameEmail(User b) {
+        if (getName().compareTo(b.getName()) == 0) {
+            return getEmail().compareTo(b.getEmail());
+        }
+        return getName().compareTo(b.getName());
+    }
+
     @Override
     public String toString() {
         return "User (" +
@@ -88,4 +114,6 @@ public class User extends AbstractNamedEntity {
                 ", caloriesPerDay=" + caloriesPerDay +
                 ')';
     }
+
+
 }

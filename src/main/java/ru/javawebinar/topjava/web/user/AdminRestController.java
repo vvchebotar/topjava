@@ -7,7 +7,7 @@ import java.util.List;
 
 @Controller
 public class AdminRestController extends AbstractUserController {
-
+    // добавим маппинги для каждого метода, и он будет вызываться в зависимости от URL
     @Override
     public List<User> getAll() {
         return super.getAll();
