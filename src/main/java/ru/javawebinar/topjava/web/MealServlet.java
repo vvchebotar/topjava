@@ -19,7 +19,7 @@ public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
     private ServletConfig config;
-
+    //private ConfigurableApplicationContext appCtx;// possible make ConfigurableApplicationContext variable
     private MealRestController mealRestController;
 
     @Override
@@ -37,12 +37,12 @@ public class MealServlet extends HttpServlet {
             mealRestController = ((ConfigurableApplicationContext) appContext).getBean(MealRestController.class);
         }
     }
-
+    //todo pay attention to order
     @Override
     public void destroy() {
-        super.destroy();
         ConfigurableApplicationContext appContext = (ConfigurableApplicationContext) config.getServletContext().getAttribute("SpringAppContext");
         appContext.close();
+        super.destroy();
     }
 
     @Override
