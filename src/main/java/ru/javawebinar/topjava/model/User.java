@@ -22,7 +22,7 @@ public class User extends AbstractNamedEntity {
 
     public User() {
     }
-
+// constructor fo copying instead Object.clone
     public User(User u) {
         this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getCaloriesPerDay(), u.isEnabled(), u.getRegistered(), u.getRoles());
     }
