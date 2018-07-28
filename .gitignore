@@ -3,7 +3,4 @@ out
 target
 *.iml
 log
-/HW2excerpt.md
-/HW2lesson.md
-/HW3excerpt.md
-/HW3lesson.md
+/x_lessons/*
