@@ -1,7 +1,13 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.AfterClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.*;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -13,6 +19,9 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
@@ -25,6 +34,8 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
+    private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
+    private static Map<String, Long> testPerformingDurations = new HashMap<>();
 
     static {
         SLF4JBridgeHandler.install();
@@ -33,14 +44,36 @@ public class MealServiceTest {
     @Autowired
     private MealService service;
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
+    @Rule
+    public Stopwatch stopwatch = new Stopwatch() {
+        @Override
+        protected void finished(long nanos, Description description) {
+            long duration = TimeUnit.NANOSECONDS.toMillis(nanos);
+            testPerformingDurations.put(description.getMethodName(), duration);
+            log.info("The test {} was performed in {} ms", description.getMethodName(), duration);
+        }
+    };
+
+    @AfterClass
+    public static void afterClass() {
+        StringBuilder builder = new StringBuilder();
+        testPerformingDurations.forEach((key, value) -> builder.append(String.format("%-18s | time - %4s ms%n", key, value)));
+        log.info("\nAll execution  durations of tests:\n" + builder);
+    }
+
     @Test
     public void delete() throws Exception {
         service.delete(MEAL1_ID, USER_ID);
         assertMatch(service.getAll(USER_ID), MEAL6, MEAL5, MEAL4, MEAL3, MEAL2);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void deleteNotFound() throws Exception {
+        exception.expect(NotFoundException.class);
+        exception.expectMessage("Not found entity with id=" + MEAL1_ID);
         service.delete(MEAL1_ID, 1);
     }
 
@@ -57,8 +90,10 @@ public class MealServiceTest {
         assertMatch(actual, ADMIN_MEAL1);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void getNotFound() throws Exception {
+        exception.expect(NotFoundException.class);
+        exception.expectMessage("Not found entity with id=" + MEAL1_ID);
         service.get(MEAL1_ID, ADMIN_ID);
     }
 
@@ -69,8 +104,10 @@ public class MealServiceTest {
         assertMatch(service.get(MEAL1_ID, USER_ID), updated);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void updateNotFound() throws Exception {
+        exception.expect(NotFoundException.class);
+        exception.expectMessage("Not found entity with id=" + MEAL1_ID);
         service.update(MEAL1, ADMIN_ID);
     }
 
