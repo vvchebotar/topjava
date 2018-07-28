@@ -21,7 +21,8 @@ import static ru.javawebinar.topjava.UserTestData.*;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
+        "classpath:spring/spring-db.xml",
+        "classpath:spring/spring-app-jdbc.xml"
 })
 @RunWith(SpringRunner.class)
 //this script will be performed before every test
@@ -38,7 +39,7 @@ public class UserServiceTest {
     private UserService service;
 
     @Test
-    public void create() throws Exception {
+    public void create() {
         User newUser = new User(null, "New", "new@gmail.com", "newPass", 1555, false, new Date(), Collections.singleton(Role.ROLE_USER));
         User created = service.create(newUser);
         newUser.setId(created.getId());
@@ -46,40 +47,40 @@ public class UserServiceTest {
     }
 
     @Test(expected = DataAccessException.class)
-    public void duplicateMailCreate() throws Exception {
+    public void duplicateMailCreate() {
         service.create(new User(null, "Duplicate", "user@yandex.ru", "newPass", Role.ROLE_USER));
     }
 
     @Test
-    public void delete() throws Exception {
+    public void delete() {
         service.delete(USER_ID);
         assertMatch(service.getAll(), ADMIN);
     }
 
     @Test(expected = NotFoundException.class)
-    public void notFoundDelete() throws Exception {
+    public void notFoundDelete() {
         service.delete(1);
     }
 
     @Test
-    public void get() throws Exception {
+    public void get() {
         User user = service.get(USER_ID);
         assertMatch(user, USER);
     }
 
     @Test(expected = NotFoundException.class)
-    public void getNotFound() throws Exception {
+    public void getNotFound() {
         service.get(1);
     }
 
     @Test
-    public void getByEmail() throws Exception {
+    public void getByEmail() {
         User user = service.getByEmail("user@yandex.ru");
         assertMatch(user, USER);
     }
 
     @Test
-    public void update() throws Exception {
+    public void update() {
         User updated = new User(USER);
         updated.setName("UpdatedName");
         updated.setCaloriesPerDay(330);
@@ -88,7 +89,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void getAll() throws Exception {
+    public void getAll() {
         List<User> all = service.getAll();
         assertMatch(all, ADMIN, USER);
     }
