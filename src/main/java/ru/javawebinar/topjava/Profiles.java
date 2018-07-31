@@ -9,6 +9,13 @@ public class Profiles {
     public static final String REPOSITORY_IMPLEMENTATION = DATAJPA;
 
     public static final String
+            JDBC_HSQLDB = "jdbc_hsqldb",
+            JDBC_PostrgeSQL= "jdbc_postgresql",
+            NO_JDBC="";
+
+    public static final String JDBC_IMPLEMENTATION = NO_JDBC;
+
+    public static final String
             POSTGRES_DB = "postgres",
             HSQL_DB = "hsqldb";
 

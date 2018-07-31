@@ -23,8 +23,8 @@ public class SpringMain {
     public static void main(String[] args) {
         // java 7 Automatic resource management
         System.setProperty("spring.profiles.active", REPOSITORY_IMPLEMENTATION + ", " + Profiles.getActiveDbProfile());
-        try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext()) {
-//            ConfigurableEnvironment environment = appCtx.getEnvironment();// "spring/spring-app.xml", "spring/spring-db.xml"
+        try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml")) {
+//            ConfigurableEnvironment environment = appCtx.getEnvironment();
 //            environment.setActiveProfiles("datajpa", "postgres");
 //            appCtx.setEnvironment(environment);
 //            appCtx.refresh(); // - don't work
