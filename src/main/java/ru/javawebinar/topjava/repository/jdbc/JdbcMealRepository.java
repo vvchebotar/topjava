@@ -11,51 +11,53 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public abstract class JdbcMealRepository implements MealRepository {
     protected static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
 
-    protected final JdbcTemplate jdbcTemplate;
-
-    protected final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-    protected final SimpleJdbcInsert insertMeal;
+    @Autowired
+    protected JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public JdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.insertMeal = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("meals")
-                .usingGeneratedKeyColumns("id");
+    protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-        this.jdbcTemplate = jdbcTemplate;
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    protected SimpleJdbcInsert insertMeal;
+
+    @PostConstruct
+    public void init() {
+        insertMeal = new SimpleJdbcInsert(jdbcTemplate);
+        insertMeal.withTableName("meals").usingGeneratedKeyColumns("id");
     }
 
     @Override
     public Meal save(Meal meal, int userId) {
         MapSqlParameterSource map = new MapSqlParameterSource()
+                .addValue("date_time", meal.getDateTime());
+        completeMapForSave(meal, userId, map);
+        return save(meal, map);
+    }
+
+    protected void completeMapForSave(Meal meal, int userId, MapSqlParameterSource map) {
+        map
                 .addValue("id", meal.getId())
                 .addValue("description", meal.getDescription())
                 .addValue("calories", meal.getCalories())
-                .addValue("date_time", meal.getDateTime())
                 .addValue("user_id", userId);
-        return save(meal, map);
     }
 
     protected Meal save(Meal meal, MapSqlParameterSource map) {
         if (meal.isNew()) {
             Number newId = insertMeal.executeAndReturnKey(map);
             meal.setId(newId.intValue());
-        } else {
-            if (namedParameterJdbcTemplate.update("" +
-                            "UPDATE meals " +
-                            "   SET description=:description, calories=:calories, date_time=:date_time " +
-                            " WHERE id=:id AND user_id=:user_id"
-                    , map) == 0) {
-                return null;
-            }
+        } else if (namedParameterJdbcTemplate.update(
+                "UPDATE meals " +
+                        "   SET description=:description, calories=:calories, date_time=:date_time " +
+                        " WHERE id=:id AND user_id=:user_id", map)
+                == 0) {
+            return null;
         }
         return meal;
     }

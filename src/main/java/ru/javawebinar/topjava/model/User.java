@@ -55,7 +55,7 @@ public class User extends AbstractNamedEntity {
 
     @OrderBy("dateTime desc")
     @OneToMany(mappedBy = "user")
-    private List<Meal> meals = new LinkedList<>();
+    private List<Meal> meals;
 
     public User() {
     }
@@ -132,10 +132,6 @@ public class User extends AbstractNamedEntity {
 
     public void setMeals(List<Meal> meals) {
         this.meals = meals;
-    }
-
-    public boolean addMeal(Meal meal) {
-        return meals.add(meal);
     }
 
     @Override

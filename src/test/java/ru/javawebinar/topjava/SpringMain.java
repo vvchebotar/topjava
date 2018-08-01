@@ -1,7 +1,6 @@
 package ru.javawebinar.topjava;
 
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.MealWithExceed;
@@ -22,12 +21,12 @@ import static ru.javawebinar.topjava.Profiles.REPOSITORY_IMPLEMENTATION;
 public class SpringMain {
     public static void main(String[] args) {
         // java 7 Automatic resource management
-        System.setProperty("spring.profiles.active", REPOSITORY_IMPLEMENTATION + ", " + Profiles.getActiveDbProfile());
-        try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml")) {
-//            ConfigurableEnvironment environment = appCtx.getEnvironment();
-//            environment.setActiveProfiles("datajpa", "postgres");
-//            appCtx.setEnvironment(environment);
-//            appCtx.refresh(); // - don't work
+        //System.setProperty("spring.profiles.active", REPOSITORY_IMPLEMENTATION + ", " + Profiles.getActiveDbProfile()); - work
+        try (GenericXmlApplicationContext appCtx = new GenericXmlApplicationContext()) {
+            appCtx.getEnvironment().setActiveProfiles(REPOSITORY_IMPLEMENTATION, Profiles.getActiveDbProfile());// - work
+            appCtx.load("spring/spring-app.xml", "spring/spring-db.xml");
+            appCtx.refresh();
+
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
             AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
             adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ROLE_ADMIN));

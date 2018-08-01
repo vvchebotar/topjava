@@ -22,7 +22,7 @@ public class UserTestData {
 
     static {
         List<Meal> meals = Arrays.asList(MEAL6, MEAL5, MEAL4, MEAL3, MEAL2, MEAL1);
-        meals.forEach(USER_WITH_MEALS::addMeal);
+        USER_WITH_MEALS.setMeals(meals);
     }
 
     public static final User STARVING_USER = new User(STARVING_USER_ID, "StarvingUser", "user2@yandex.ru", "password", Role.ROLE_USER);

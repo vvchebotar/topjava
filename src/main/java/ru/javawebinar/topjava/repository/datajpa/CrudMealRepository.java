@@ -14,7 +14,6 @@ import java.util.Optional;
 public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
 
     @Override
-    @Transactional
     Meal save(Meal meal);
 
 /*    @Transactional

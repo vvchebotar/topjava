@@ -18,16 +18,7 @@
     </jdbc:initialize-database>
     <!-- патч 4 4-->
 
-    <beans profile="datajpa">
-        <context:component-scan base-package="ru.javawebinar.**.repository.datajpa"/>
-        <jpa:repositories base-package="ru.javawebinar.**.repository.datajpa"/>
-    </beans>
-
-    <beans profile="jpa">
-        <context:component-scan base-package="ru.javawebinar.**.repository.jpa"/>
-    </beans>
-
-    <beans profile="jpa, datajpa">
+    <beans profile="datajpa, jpa">
         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
               p:dataSource-ref="dataSource"
               p:packagesToScan="ru.javawebinar.**.model">
@@ -57,6 +48,35 @@
               p:entityManagerFactory-ref="entityManagerFactory"/>
     </beans>
 
+    <beans profile="datajpa">
+        <context:component-scan base-package="ru.javawebinar.**.repository.datajpa"/>
+        <jpa:repositories base-package="ru.javawebinar.**.repository.datajpa"/>
+    </beans>
+
+    <beans profile="jpa">
+        <context:component-scan base-package="ru.javawebinar.**.repository.jpa"/>
+    </beans>
+
+    <beans profile="jdbc_hsqldb, jdbc_postgresql">
+        <context:component-scan base-package="ru.javawebinar.**.repository.jdbc.user"/>
+
+        <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+            <constructor-arg ref="dataSource"/>
+        </bean>
+
+        <bean id="namedJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+            <constructor-arg ref="jdbcTemplate"/>
+        </bean>
+    </beans>
+
+    <beans profile="jdbc_hsqldb">
+        <context:component-scan base-package="ru.javawebinar.**.repository.jdbc.hsqldb"/>
+    </beans>
+
+    <beans profile="jdbc_postgresql">
+        <context:component-scan base-package="ru.javawebinar.**.repository.jdbc.postgresql"/>
+    </beans>
+
     <beans profile="postgres">
         <context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>
 
@@ -80,22 +100,4 @@
               p:password="${database.password}"/>
     </beans>
 
-    <beans profile="jdbc">
-        <context:component-scan base-package="ru.javawebinar.**.repository.jdbc.user"/>
-
-        <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-            <constructor-arg ref="dataSource"/>
-        </bean>
-
-        <bean id="namedJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
-            <constructor-arg ref="jdbcTemplate"/>
-        </bean>
-    </beans>
-
-    <beans profile="jdbc_hsqldb">
-        <context:component-scan base-package="ru.javawebinar.**.repository.jdbc.hsqldb"/>
-    </beans>
-    <beans profile="jdbc_postgresql">
-        <context:component-scan base-package="ru.javawebinar.**.repository.jdbc.postgresql"/>
-    </beans>
 </beans>
