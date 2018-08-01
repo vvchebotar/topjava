@@ -14,7 +14,7 @@ import static ru.javawebinar.topjava.MealTestData.assertMatch;
 import static ru.javawebinar.topjava.UserTestData.*;
 
 
-public class MealServiceTest extends AbstractBaseTest {
+public abstract class MealServiceBaseTest extends AbstractBaseTest {
     @Autowired
     private MealService service;
 

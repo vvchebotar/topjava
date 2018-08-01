@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
 
 import static ru.javawebinar.topjava.UserTestData.*;
 
-public class UserServiceTest extends AbstractBaseTest {
+public abstract class UserServiceBaseTest extends AbstractBaseTest {
     @Autowired
     private UserService service;
 
