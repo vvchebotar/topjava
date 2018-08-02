@@ -1,8 +1,8 @@
-package ru.javawebinar.topjava.service;
+package ru.javawebinar.topjava.service.user;
 
 import org.springframework.test.context.ActiveProfiles;
 import ru.javawebinar.topjava.ActiveJdbcProfileResolver;
 
 @ActiveProfiles(resolver = ActiveJdbcProfileResolver.class)
-public class MealServiceJdbcTest extends MealServiceBaseTest {
+public class UserServiceJdbcTest extends UserServiceBaseTest {
 }

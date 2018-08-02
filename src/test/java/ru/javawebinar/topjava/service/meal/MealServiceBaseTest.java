@@ -1,9 +1,11 @@
-package ru.javawebinar.topjava.service;
+package ru.javawebinar.topjava.service.meal;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.service.AbstractBaseTest;
+import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
@@ -16,7 +18,7 @@ import static ru.javawebinar.topjava.UserTestData.*;
 
 public abstract class MealServiceBaseTest extends AbstractBaseTest {
     @Autowired
-    private MealService service;
+    protected MealService service;
 
     @Test
     public void delete() throws Exception {
@@ -73,12 +75,5 @@ public abstract class MealServiceBaseTest extends AbstractBaseTest {
         assertMatch(service.getBetweenDates(
                 LocalDate.of(2015, Month.MAY, 30),
                 LocalDate.of(2015, Month.MAY, 30), USER_ID), MEAL3, MEAL2, MEAL1);
-    }
-
-    @Test
-    public void getByIdWithMeals() throws Exception {
-        Meal meal = service.getWithUser(MEAL1_ID, USER_ID);
-        assertMatch(meal, MEAL1);
-        UserTestData.assertMatch(meal.getUser(), USER);
     }
 }

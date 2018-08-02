@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.service;
+package ru.javawebinar.topjava.service.user;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +8,8 @@ import org.springframework.dao.DataAccessException;
 import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
+import ru.javawebinar.topjava.service.AbstractBaseTest;
+import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.util.Collections;
@@ -19,7 +21,7 @@ import static ru.javawebinar.topjava.UserTestData.*;
 
 public abstract class UserServiceBaseTest extends AbstractBaseTest {
     @Autowired
-    private UserService service;
+    protected UserService service;
 
     @Autowired
     private CacheManager cacheManager;
@@ -83,14 +85,5 @@ public abstract class UserServiceBaseTest extends AbstractBaseTest {
     public void getAll() throws Exception {
         List<User> all = service.getAll();
         assertMatch(all, ADMIN, STARVING_USER, USER);
-    }
-
-    @Test
-    public void getByIdWithMeals() throws Exception {
-        User user = service.getWithMeals(USER_ID);
-        assertMatch(user, USER_WITH_MEALS);
-        IntStream.range(0, 6).forEach(i -> MealTestData.assertMatch(user.getMeals().get(i), USER_WITH_MEALS.getMeals().get(i)));
-        User user2 = service.getWithMeals(STARVING_USER_ID);
-        assertMatch(user2, STARVING_USER);
     }
 }
