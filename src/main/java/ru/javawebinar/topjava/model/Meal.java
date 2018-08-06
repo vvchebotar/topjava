@@ -11,10 +11,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @NamedQueries(value = {
-        @NamedQuery(name = Meal.DELETE, query = "DELETE FROM  Meal WHERE id=:id AND user.id=:user_id"),
-        @NamedQuery(name = Meal.GET_ALL_SORTED, query = "SELECT m FROM  Meal m WHERE m.user.id=:user_id ORDER BY m.dateTime DESC"),
+        @NamedQuery(name = Meal.DELETE, query = "DELETE FROM  Meal WHERE id=:id AND user.id=:userId"),
+        @NamedQuery(name = Meal.GET_ALL_SORTED, query = "SELECT m FROM  Meal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC"),
 //        @NamedQuery(name = "тоже что и GET_ALL_SORTED", query = "SELECT m FROM  Meal m JOIN m.user u WHERE u.id=:user_id ORDER BY m.dateTime DESC"),
-        @NamedQuery(name = Meal.GET_BETWEEN_SORTED, query = "SELECT m FROM  Meal m WHERE m.user.id=:user_id AND m.dateTime BETWEEN :start_time AND :end_time ORDER BY m.dateTime DESC"),
+        @NamedQuery(name = Meal.GET_BETWEEN_SORTED, query = "SELECT m FROM Meal m " +
+                "WHERE m.user.id=:userId AND m.dateTime BETWEEN :startDate AND :endDate ORDER BY m.dateTime DESC"),
 //        @NamedQuery(name = "тоже что и GET_BETWEEN_SORTED", query = "SELECT m FROM   Meal m JOIN m.user u WHERE u.id=:user_id AND m.dateTime BETWEEN :start_time AND :end_time ORDER BY m.dateTime DESC"),
 //        distinct - чтобы не создавались на каждый fetch отдельной копии объекта, а один объект - коллекция ассоц объектов
 //        @NamedQuery(name = "Contact.findById", query = "select distinct m from Meal m left join fetch m.user u  where m.id = :id"),
@@ -30,7 +31,7 @@ public class Meal extends AbstractBaseEntity {
     public static final String GET_ALL_SORTED = "Meal.getAllSorted";
     public static final String GET_BETWEEN_SORTED = "Meal.getBetweenSorted";
 
-    @Column(name = "date_time")
+    @Column(name = "date_time", nullable = false)
     @NotNull
     private LocalDateTime dateTime;
 
@@ -43,9 +44,9 @@ public class Meal extends AbstractBaseEntity {
     @Range(min = 0, max = 10000)
     private int calories;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
+    @NotNull
     private User user;
 
     public Meal() {

@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
+// можно перенести на уровень service, тогда к БД будет обращаться одной транзакцией.
+// Но можно инжектить в сервис несколько баз данных. И объединять результат. На уровне DAO так не сделаешь.
 @Transactional(readOnly = true)// обеспечивает более высоку производительность для методов только чтения @springprof
 public class JpaMealRepositoryImpl implements MealRepository {
     // контекстов может быть несколько и их нужно именовать (unitName = "")
@@ -24,20 +26,19 @@ public class JpaMealRepositoryImpl implements MealRepository {
     @Override
     @Transactional
     public Meal save(Meal meal, int userId) {
+        // проверяем есть ли meal у user
+        if (!meal.isNew() && get(meal.getId(), userId) == null) {
+            return null;
+        }
         // делаем обертку над entity User у которого id==userId, но в базу запрос не идет
-        User userRef = em.getReference(User.class, userId);
         // добавляем к Meal без юзера ссылку на обертку над юзером
-        meal.setUser(userRef);
+        meal.setUser(em.getReference(User.class, userId));
         if (meal.isNew()) {
             // сохраняем в БД
             em.persist(meal);
             // откуда у meal появляется id? в доках persist() я не смог найти...
             return meal;
         } else {
-            Meal queriedMeal = get(meal.getId(), userId);
-            if (queriedMeal == null) {
-                return null;
-            }
             return em.merge(meal);
         }
     }
@@ -47,7 +48,7 @@ public class JpaMealRepositoryImpl implements MealRepository {
     public boolean delete(int id, int userId) {
         return em.createNamedQuery(Meal.DELETE)
                 .setParameter("id", id)
-                .setParameter("user_id", userId)
+                .setParameter("userId", userId)
                 .executeUpdate() != 0;
     }
 
@@ -88,15 +89,15 @@ public class JpaMealRepositoryImpl implements MealRepository {
 //                "select new com.apress.prospring4.ch8.ContactSummary(c.firstName, c.lastName, t.telNumЬer) from Contact с left join c.contactTelDetails t where t.telType= 'Home'",
 //                ContactSummary.class).getResultList();
         return em.createNamedQuery(Meal.GET_ALL_SORTED, Meal.class)
-                .setParameter("user_id", userId)
+                .setParameter("userId", userId)
                 .getResultList();
     }
 
     @Override
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
         return em.createNamedQuery(Meal.GET_BETWEEN_SORTED, Meal.class)
-                .setParameter("user_id", userId)
-                .setParameter("start_time", startDate)
-                .setParameter("end_time", endDate).getResultList();
+                .setParameter("userId", userId)
+                .setParameter("startDate", startDate)
+                .setParameter("endDate", endDate).getResultList();
     }
 }
