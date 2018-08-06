@@ -54,6 +54,7 @@ public class DataJpaMealRepositoryImpl implements MealRepository {
         return crudMealRepository.getByUserIdAndDateTimeBetweenOrderByDateTimeDesc(userId, startDate, endDate);
     }
 
+    // second variant on service level: make two query, one to get meal, second to get user for meal. After user set to meal.
     @Override
     public Meal getWithUser(int id, int userId) {
         return crudMealRepository.getByIdAndUserIdWithFetchedUser(id, userId);

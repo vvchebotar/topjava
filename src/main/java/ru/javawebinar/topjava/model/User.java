@@ -53,8 +53,8 @@ public class User extends AbstractNamedEntity {
     @Range(min = 10, max = 10000)
     private int caloriesPerDay = DEFAULT_CALORIES_PER_DAY;
 
-    @OrderBy("dateTime desc")
-    @OneToMany(mappedBy = "user")
+    @OrderBy("dateTime DESC")
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "user")
     private List<Meal> meals;
 
     public User() {
