@@ -17,17 +17,19 @@
           p:prefix="/WEB-INF/jsp/"
           p:suffix=".jsp"/>
 
-    <!--
+    <!--  обертка к стандартному resource bundle, который есть в jsp
         <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"
-              p:cacheSeconds="60"
-              p:defaultEncoding="UTF-8">
-            <property name="basenames">
-                <list>
-                    <value>messages/app</value>
-                </list>
-            </property>
-        </bean>
-    -->
+              p:cacheSeconds="60"--><!--не работает в ResourceBundleMessageSource, cause ResourceBundleMessageSource uses underlying JDK's ResourceBundle implementation.--> <!--
+          p:defaultEncoding="UTF-8"> --><!--addition--><!--
+        <property name="basenames">
+            <list>
+                <value>messages/app</value>
+            </list>
+        </property>
+    </bean>
+-->
+    <!-- p:cacheSeconds="5" - чтобы спринг обновлял ресурсы каждые 60 секунд. Удобно, если с другом месте файлы. Ты подправил, а они сами подтянулись.-->
+    <!--делаем так, чтобы наш файл лежал не в classpath, а отдельно через переменные среды-->
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
           p:cacheSeconds="5"
           p:defaultEncoding="UTF-8">

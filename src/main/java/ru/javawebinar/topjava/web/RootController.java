@@ -9,6 +9,7 @@ import ru.javawebinar.topjava.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 
+// будет два вида контроллеров, 1 работает по UI, второй по REST интерфейсу.
 @Controller
 public class RootController {
     @Autowired

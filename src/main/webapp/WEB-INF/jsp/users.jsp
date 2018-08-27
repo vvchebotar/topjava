@@ -22,6 +22,7 @@
         </tr>
         </thead>
         <c:forEach items="${users}" var="user">
+            <%-- для интеграции, чтобы можно было следить и автовыбирать поля класса--%>
             <jsp:useBean id="user" scope="page" type="ru.javawebinar.topjava.model.User"/>
             <tr>
                 <td><c:out value="${user.name}"/></td>

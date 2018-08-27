@@ -12,7 +12,9 @@ public class JpaUtil {
     private EntityManager em;
 
     public void clear2ndLevelHibernateCache() {
+        //em делегирует свою функциональность to session.
         Session s = (Session) em.getDelegate();
+
         SessionFactory sf = s.getSessionFactory();
 //        sf.evict(User.class);
 //        sf.getCache().evictEntity(User.class, BaseEntity.START_SEQ);

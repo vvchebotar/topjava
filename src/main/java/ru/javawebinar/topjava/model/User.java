@@ -54,6 +54,7 @@ public class User extends AbstractNamedEntity {
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
+    // fetch type не нужно настраивать, так как с этой аннотацие он настроен по умолчанию на все операции.
     @ElementCollection(fetch = FetchType.EAGER)
 //    @Fetch(FetchMode.SUBSELECT)
     @BatchSize(size = 200)
