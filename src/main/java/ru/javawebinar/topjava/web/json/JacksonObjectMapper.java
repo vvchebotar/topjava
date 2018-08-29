@@ -23,11 +23,15 @@ public class JacksonObjectMapper extends ObjectMapper {
     private JacksonObjectMapper() {
         registerModule(new Hibernate5Module());
 
+        // для настройки, чтобы на LocalDateTime хорошо сериализовался. Для этого добавлена зависимость в pom файл.
         registerModule(new JavaTimeModule());
         configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
+        // запрещаем сразу все accessors
         setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
+        // потом разрешаем для полей
         setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        // не сериализовать нулевые поля (включать только те, которые не null.
         setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 

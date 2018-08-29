@@ -63,7 +63,7 @@
                 <configuration>
                     <argLine>-Dfile.encoding=UTF-8</argLine>
                 </configuration>
-                <dependencies>
+                <dependencies><!-- в плагин для тестов добавили, что мы используем JUnit5-->
                     <dependency>
                         <groupId>org.junit.platform</groupId>
                         <artifactId>junit-platform-surefire-provider</artifactId>
@@ -245,7 +245,7 @@
             <version>${jackson-json.version}</version>
         </dependency>
 
-        <!--Test-->
+        <!--Test JUnit5-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>

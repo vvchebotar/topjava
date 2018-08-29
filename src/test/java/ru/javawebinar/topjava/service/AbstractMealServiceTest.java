@@ -69,6 +69,7 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
 
     @Test
     void updateNotFound() throws Exception {
+        // вместо thrown через  @Rules. Из assertThrows мы возвращаем exception и теперь можем сравнивать все ч то захотим из него.
         NotFoundException e = assertThrows(NotFoundException.class, () -> service.update(MEAL1, ADMIN_ID));
         assertEquals(e.getMessage(), "Not found entity with id=" + MEAL1_ID);
     }
@@ -87,6 +88,7 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
 
     @Test
     void testValidation() throws Exception {
+        // вместо assume, предусловие по которому проверяется выполнять ли  тест при условии
         Assumptions.assumeTrue(isJpaBased(), "JPA not supported");
         validateRootCause(() -> service.create(new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "  ", 300), USER_ID), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Meal(null, null, "Description", 300), USER_ID), ConstraintViolationException.class);

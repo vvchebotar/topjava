@@ -14,7 +14,7 @@ import ru.javawebinar.topjava.TimingExtension;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
-
+// объединяет в себе ExtendWith
 @SpringJUnitConfig(locations = {
         "classpath:spring/spring-app.xml",
         "classpath:spring/spring-db.xml"
@@ -22,6 +22,7 @@ import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
 //@ExtendWith(SpringExtension.class)
 @ActiveProfiles(resolver = ActiveDbProfileResolver.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
+// вместо @Rules
 @ExtendWith(TimingExtension.class)
 abstract class AbstractServiceTest {
 
@@ -40,6 +41,7 @@ abstract class AbstractServiceTest {
 
     //  Check root cause in JUnit: https://github.com/junit-team/junit4/pull/778
     <T extends Throwable> void validateRootCause(Runnable runnable, Class<T> exceptionClass) {
+//        вместо поля аннотации expected + здесь изменена реализация validateRootCause
         assertThrows(exceptionClass, () -> {
             try {
                 runnable.run();
