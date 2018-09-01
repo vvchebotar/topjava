@@ -12,7 +12,9 @@ function makeEditable() {
 }
 
 function add() {
+    // задаем значение всем form (selector :input). Почему val является id или как связано, я не знаю.
     $("#detailsForm").find(":input").val("");
+    // .modal - bootstrap функция, которая...
     $("#editRow").modal();
 }
 

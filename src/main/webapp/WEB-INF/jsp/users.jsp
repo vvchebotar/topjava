@@ -14,6 +14,7 @@
     <div class="container">
         <h3><spring:message code="user.title"/></h3>
         <br/>
+        <%-- onclick - вместо того чтобы вешать функцию через селекторы, мы напрямую указываем какой скрипт проиграть --%>
         <button class="btn btn-primary" onclick="add()">
             <span class="fa fa-plus"></span>
             <spring:message code="common.add"/>

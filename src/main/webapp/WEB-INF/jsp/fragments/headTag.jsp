@@ -7,6 +7,8 @@
     <title><spring:message code="app.title"/></title>
     <base href="${pageContext.request.contextPath}/"/>
 
+    <%-- чтобы ссылки находились, нужно добавлять роутинг тоесть мы в mvn config говорим как находить те или иные классы в jar--%>
+    <%-- все url которые начинаются с webjars роутим на classpath:/META-INF/resources/webjars/--%>
     <link rel="stylesheet" href="resources/css/style.css">
     <link rel="stylesheet" href="webjars/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="webjars/noty/3.1.4/demo/font-awesome/css/font-awesome.min.css">
